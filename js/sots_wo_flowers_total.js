@@ -209,16 +209,9 @@ function drawRosesWO(data, diagonal, provincies, provinciesChosen, radius, color
 	drawRoseCircle(1, 0.05);
 	drawRoseCircle(2, 0.125);
 	drawRoseCircle(3, 0.22);
-	
-	////////////////////////////////////////////////////////////
-	////////////////// Button Activity /////////////////////////
-	////////////////////////////////////////////////////////////
-
-	/* Activate the buttons and link to data sets */
-	d3.selectAll(".roseButton").on("click", updateRoses);
 
 	////////////////////////////////////////////////////////////
-	////////////////// Button Activity /////////////////////////
+	/////////////////// Hover Activity /////////////////////////
 	////////////////////////////////////////////////////////////
 
 	//Hide the tooltip when the mouse moves away
@@ -254,31 +247,5 @@ function drawRosesWO(data, diagonal, provincies, provinciesChosen, radius, color
 			});
 	}//drawRoseCircle
 	
-	//Update the roses
-	function updateRoses() {
-		chosen = d3.select(this).attr("value");
-		
-		//Update the data 
-		//Taken from: http://stackoverflow.com/questions/25911019/d3-multiple-pie-chart-updates
-		for(x in data[chosen]) {
-			var npath = d3.select("#pie"+x).selectAll("path").data(pie(data[chosen][x]))
-			npath.transition().duration(1000).attrTween("d", arcTween); // redraw the arcs
-		}//for
-		
-		//Update the text in the middle
-		flowers.selectAll(".flower.value")
-			.text(function(d,i,j) {return numFormatPercent(diagonal[chosen][j]); })
-	}//drawRoseCircle
-
-	// Store the displayed angles in _current.
-	// Then, interpolate from _current to the new angles.
-	// During the transition, _current is updated in-place by d3.interpolate.
-	function arcTween(a) {
-	  var i = d3.interpolate(this._current, a);
-	  this._current = i(0);
-	  return function(t) {
-		return arc(i(t));
-	  };
-	}	
 }; //function drawRoses
 
